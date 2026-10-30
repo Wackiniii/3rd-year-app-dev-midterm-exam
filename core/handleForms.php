@@ -31,8 +31,9 @@ if (isset($_GET['logout'])) {
 }
 
 if (isset($_POST['insertAlbumBtn'])) {
+	$added_by = $_SESSION['user_id'];
 	$query = insertAlbum($pdo, $_POST['album_name'], $_POST['artist_name'], 
-		$_POST['producer_name'], $_POST['status'], $_POST['release_date']);
+		$_POST['producer_name'], $_POST['status'], $_POST['release_date'], $added_by);
 
 	if ($query) {
 		header("Location: ../index.php");
@@ -46,9 +47,10 @@ if (isset($_POST['insertAlbumBtn'])) {
 
 
 if (isset($_POST['editAlbumBtn'])) {
+	$last_modified_by = $_SESSION['user_id'];
 	$query = updateAlbum($pdo, $_POST['album_name'], $_POST['artist_name'], 
 		$_POST['producer_name'], $_POST['status'], $_POST['release_date'], 
-        $_GET['album_id']);
+		$last_modified_by, $_GET['album_id']);
 
 	if ($query) {
 		header("Location: ../index.php");
@@ -81,10 +83,11 @@ if (isset($_POST['deleteAlbumBtn'])) {
 
 
 if (isset($_POST['insertNewTrackBtn'])) {
+	$added_by = $_SESSION['user_id'];
 	$query = insertTrack($pdo, $_POST['track_name'], 
             $_POST['genre'], $_POST['duration_seconds'] ,
             $_POST['bpm'], $_POST['key_signature'], 
-            $_POST['time_signature'], $_GET['album_id']);
+            $_POST['time_signature'], $added_by, $_GET['album_id']);
 
 	if ($query) {
 		header("Location: ../viewTracks.php?album_id=" .$_GET['album_id']);
@@ -98,9 +101,10 @@ if (isset($_POST['insertNewTrackBtn'])) {
 
 
 if (isset($_POST['editTrackBtn'])) {
+	$last_modified_by = $_SESSION['user_id'];
 	$query = updateTrack($pdo, $_POST['track_name'], $_POST['genre'], 
             $_POST['duration_seconds'], $_POST['bpm'], $_POST['key_signature'], 
-            $_POST['time_signature'], $_GET['track_id']);
+            $_POST['time_signature'], $last_modified_by, $_GET['track_id']);
 
 	if ($query) {
 		header("Location: ../viewTracks.php?album_id=" .$_GET['album_id']);
