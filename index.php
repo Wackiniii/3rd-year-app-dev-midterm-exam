@@ -17,6 +17,7 @@ if (!isset($_SESSION['user_id'])) {
 	<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+	<a href="core/handleForms.php?logout=true">Logout</a>
 	<h1>Welcome To Music Recording Studio System</h1>
     <p>Insert the following table: </p>
 	<form action="core/handleForms.php" method="POST">
@@ -44,13 +45,15 @@ if (!isset($_SESSION['user_id'])) {
 	</form>
 	<?php $getAllAlbum = getAllAlbum($pdo); ?>
 	<?php foreach ($getAllAlbum as $row) { ?>
-	<div class="container" style="border-style: solid; width: 50%; height: 300px; margin-top: 20px;">
+	<div class="container" style="border-style: solid; width: 50%; height: 330px; margin-top: 20px;">
 		<h3>Album Name: <?php echo $row['album_name']; ?></h3>
 		<h3>Artist Name: <?php echo $row['artist_name']; ?></h3>
 		<h3>Producer Name: <?php echo $row['producer_name']; ?></h3>
 		<h3>Status: <?php echo $row['status']; ?></h3>
 		<h3>Release Date: <?php echo $row['release_date']; ?></h3>
 		<h3>Date Added: <?php echo $row['date_added']; ?></h3>
+		<h3>Added by: <?php echo $row['added_by']; ?></h3>
+		<h3>Last Modified by: <?php echo $row['last_modified_by']; ?></h3>
 
 
 		<div class="editAndDelete" style="float: right; margin-right: 20px;">
@@ -61,7 +64,5 @@ if (!isset($_SESSION['user_id'])) {
 
 	</div> 
 	<?php } ?>
-
-	<a href="core/handleForms.php?logout=true">Logout</a>
 </body>
 </html>

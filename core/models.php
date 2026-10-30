@@ -151,7 +151,15 @@ function deleteTrack($pdo, $track_id) {
 
 
 function getAllAlbum($pdo) {
-	$sql = "SELECT * FROM album";
+	$sql = "SELECT 
+				album.*,
+				creator.username AS added_by,
+				modifier.username AS last_modified_by 
+			FROM album
+			LEFT JOIN users AS creator ON album.added_by = creator.user_id
+			LEFT JOIN users AS modifier ON album.last_modified_by = modifier.user_id
+			
+			";
 	$stmt = $pdo->prepare($sql);
 	$executeQuery = $stmt->execute();
 
@@ -161,7 +169,15 @@ function getAllAlbum($pdo) {
 }
 
 function getAlbumByID($pdo, $album_id) {
-	$sql = "SELECT * FROM album WHERE album_id = ?";
+	$sql = "SELECT 
+				album.*,
+				creator.username AS added_by,
+				modifier.username AS last_modified_by 
+			FROM album 
+			LEFT JOIN users AS creator ON album.added_by = creator.user_id
+			LEFT JOIN users AS modifier ON album.last_modified_by = modifier.user_id
+			WHERE album_id = ?
+			";
 	$stmt = $pdo->prepare($sql);
 	$executeQuery = $stmt->execute([$album_id]);
 
@@ -182,9 +198,13 @@ function getTracksByAlbum($pdo, $album_id) {
                 track.time_signature AS time_signature,                
 				album.artist_name AS artist_name,
                 album.producer_name AS producer_name,
+				creator.username AS added_by,
+				modifier.username AS last_modified_by,
 				track.date_added AS date_added
 			FROM track
 			JOIN album ON track.album_id = album.album_id
+			LEFT JOIN users AS creator ON track.added_by = creator.user_id
+            LEFT JOIN users AS modifier ON track.last_modified_by = modifier.user_id
 			WHERE track.album_id = ?
 			ORDER BY track.track_name ASC
 			";
@@ -207,9 +227,13 @@ function getTrackByID($pdo, $track_id) {
                 track.time_signature AS time_signature,
                 track.date_added AS date_added,
 				album.artist_name AS artist_name,
-                album.producer_name AS producer_name
+                album.producer_name AS producer_name,
+				creator.username AS added_by,
+				modifier.username AS last_modified_by
 			FROM track
 			JOIN album ON track.album_id = album.album_id
+			LEFT JOIN users AS creator ON track.added_by = creator.user_id
+            LEFT JOIN users AS modifier ON track.last_modified_by = modifier.user_id
 			WHERE track.track_id  = ? 
 			ORDER BY track.track_name ASC
 			";
