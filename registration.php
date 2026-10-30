@@ -19,11 +19,11 @@ require_once 'core/handleForms.php';
 		</p>
         <p>
 			<label for="first_name">First Name</label>
-			<input type="text" name="username" required>
+			<input type="text" name="first_name" required>
 		</p>
         <p>
 			<label for="last_name">Last Name</label>
-			<input type="text" name="username" required>
+			<input type="text" name="last_name" required>
 		</p>
         <p>
 			<label for="birth_date">Birth Date</label>
