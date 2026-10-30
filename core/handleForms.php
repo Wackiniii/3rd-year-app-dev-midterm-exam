@@ -107,7 +107,6 @@ if (isset($_POST['editTrackBtn'])) {
 
 	if ($query) {
 		header("Location: ../viewTracks.php?album_id=" .$_GET['album_id']);
-		exit;
 	}
 	else {
 		echo "Update failed";

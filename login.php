@@ -19,10 +19,25 @@ require_once 'core/handleForms.php';
 		</p>
 		<p>
 			<label for="password">Password</label>
-			<input type="password" name="password" required>
-			<input type="submit" name="loginBtn">
+			<input type="password" name="password" id="password" required>
+            <button type="button" id="toggle" aria-pressed="false">Show</button>   
 		</p>
+        <p>
+            <input type="submit" name="loginBtn">
+            <input type="reset" value="Reset">
+        </p>
 	</form>
     <p>Don't have an account yet?<a href="registration.php"> Create Account</a></p>
 </body>
+
+<script>
+    const input = document.getElementById('password');
+    const btn   = document.getElementById('toggle');
+    btn.addEventListener('click', () => {
+    const show = input.type === 'password';
+    input.type = show ? 'text' : 'password';
+    btn.textContent = show ? 'Hide' : 'Show';
+    btn.setAttribute('aria-pressed', show);
+    });   
+</script>
 </html>

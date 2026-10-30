@@ -13,13 +13,15 @@ require_once 'core/handleForms.php';
 <body>
 	<?php $getTrackByID = getTrackByID($pdo, $_GET['track_id']); ?>
 	<h1>Are you sure you want to delete this track?</h1>
-	<div class="container" style="border-style: solid; height: 400px;">
+	<div class="container" style="border-style: solid; height: 430px;">
 		<h2>Track Name: <?php echo $getTrackByID['track_name'] ?></h2>
 		<h2>Genre: <?php echo $getTrackByID['genre'] ?></h2>
 		<h2>Duration In Seconds: <?php echo $getTrackByID['duration_seconds'] ?></h2>
         <h2>BPM: <?php echo $getTrackByID['bpm'] ?></h2>
         <h2>Key Signature: <?php echo $getTrackByID['key_signature'] ?></h2>
         <h2>Time Signature: <?php echo $getTrackByID['time_signature'] ?></h2>
+		<h2>Added By: <?php echo $getTrackByID['added_by'] ?></h2>
+		<h2>Last Modified By: <?php echo $getTrackByID['last_modified_by'] ?></h2>
 		<h2>Date Added: <?php echo $getTrackByID['date_added'] ?></h2>
 
 		<div class="deleteBtn" style="float: right; margin-right: 10px;">
