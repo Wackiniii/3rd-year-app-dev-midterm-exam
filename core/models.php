@@ -83,11 +83,6 @@ function updateAlbum($pdo, $album_name, $artist_name, $producer_name,
 
 
 function deleteAlbum($pdo, $album_id) {
-	$deleteAlbum = "DELETE FROM album WHERE album_id = ?";
-	$deleteStmt = $pdo->prepare($deleteAlbum);
-	$executeDeleteQuery = $deleteStmt->execute([$album_id]);
-
-	if ($executeDeleteQuery) {
 		$sql = "DELETE FROM album WHERE album_id = ?";
 		$stmt = $pdo->prepare($sql);
 		$executeQuery = $stmt->execute([$album_id]);
@@ -95,9 +90,6 @@ function deleteAlbum($pdo, $album_id) {
 		if ($executeQuery) {
 			return true;
 		}
-
-	}
-	
 }
 
 function insertTrack($pdo, $track_name, $genre, $duration_seconds, 
@@ -193,8 +185,8 @@ function getTracksByAlbum($pdo, $album_id) {
 				track.date_added AS date_added
 			FROM track
 			JOIN album ON track.album_id = album.album_id
-			WHERE track.album_id = ? 
-			GROUP BY track.track_name;
+			WHERE track.album_id = ?
+			ORDER BY track.track_name ASC
 			";
 
 	$stmt = $pdo->prepare($sql);
@@ -219,7 +211,8 @@ function getTrackByID($pdo, $track_id) {
 			FROM track
 			JOIN album ON track.album_id = album.album_id
 			WHERE track.track_id  = ? 
-			GROUP BY track.track_name";
+			ORDER BY track.track_name ASC
+			";
 
 	$stmt = $pdo->prepare($sql);
 	$executeQuery = $stmt->execute([$track_id]);
