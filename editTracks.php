@@ -46,7 +46,12 @@ require_once 'core/handleForms.php';
 			<label for="time_signature">Time Signature</label> 
 			<input type="text" name="time_signature" 
 			value="<?php echo $getTrackByID['time_signature']; ?>">
+
+		</p>
+		<p>
+			<input type="button" value="Go Back" onclick="history.back()">
             <input type="submit" name="editTrackBtn">
+			<input type="reset" value="Reset">
 		</p>
 	</form>
 </body>
