@@ -6,28 +6,36 @@ require_once 'models.php';
 
 if (isset($_POST['registerBtn'])) {
 	$query = registerUser($pdo, $_POST['username'], $_POST['password'], 
-		$_POST['$first_name'], $_POST['last_name'], $_POST['birth_date'], $_POST['gender']);
+		$_POST['first_name'], $_POST['last_name'], $_POST['birth_date'], $_POST['gender']);
 	if ($query) {
 		header("Location: ../login.php");
+		exit;
 	}
+	else {
+		$_SESSION['message'] = "Please fill up the input fields";
+		header("Location: ../login.php");
+	exit;
 }
+} 
 
 if (isset($_POST['loginBtn'])) {
-    $query = loginUser($pdo, $_POST['username'], $_POST['password'], 
-		$_POST['$first_name'], $_POST['last_name'], $_POST['birth_date'], $_POST['gender']);
+    $query = loginUser($pdo, $_POST['username'], $_POST['password']);
     if ($query) {
-        $_SESSION['user_id'] = $user_id;
+        $_SESSION['user_id'] = $query;
         header("Location: ../index.php");
+		exit;
     } else {
-        echo "Invalid credentials";
-    }
-}
+		$_SESSION['message'] = "Invalid credentials";
+		header("Location: ../login.php");
+		exit;
+	}
+} 
 
 if (isset($_GET['logout'])) {
     session_unset();
     session_destroy();
     header("Location: ../login.php");
-    exit();
+    exit;
 }
 
 if (isset($_POST['insertAlbumBtn'])) {
@@ -44,7 +52,6 @@ if (isset($_POST['insertAlbumBtn'])) {
 	}
 
 }
-
 
 if (isset($_POST['editAlbumBtn'])) {
 	$last_modified_by = $_SESSION['user_id'];
@@ -63,9 +70,6 @@ if (isset($_POST['editAlbumBtn'])) {
 
 }
 
-
-
-
 if (isset($_POST['deleteAlbumBtn'])) {
 	$query = deleteAlbum($pdo, $_GET['album_id']);
 
@@ -79,9 +83,6 @@ if (isset($_POST['deleteAlbumBtn'])) {
 	}
 }
 
-
-
-
 if (isset($_POST['insertNewTrackBtn'])) {
 	$added_by = $_SESSION['user_id'];
 	$query = insertTrack($pdo, $_POST['track_name'], 
@@ -91,14 +92,12 @@ if (isset($_POST['insertNewTrackBtn'])) {
 
 	if ($query) {
 		header("Location: ../viewTracks.php?album_id=" .$_GET['album_id']);
+		exit;
 	}
 	else {
 		echo "Insertion failed";
 	}
 }
-
-
-
 
 if (isset($_POST['editTrackBtn'])) {
 	$last_modified_by = $_SESSION['user_id'];
@@ -108,15 +107,13 @@ if (isset($_POST['editTrackBtn'])) {
 
 	if ($query) {
 		header("Location: ../viewTracks.php?album_id=" .$_GET['album_id']);
+		exit;
 	}
 	else {
 		echo "Update failed";
 	}
 
 }
-
-
-
 
 if (isset($_POST['deleteTrackBtn'])) {
 	$query = deleteTrack($pdo, $_GET['track_id']);

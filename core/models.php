@@ -1,5 +1,4 @@
 <?php  
-
 function registerUser($pdo , $username, $password, $first_name, $last_name, $birth_date, $gender) {
 	$hashed_password = password_hash($password, PASSWORD_ARGON2ID);
 
@@ -15,7 +14,7 @@ function registerUser($pdo , $username, $password, $first_name, $last_name, $bir
 	}
 }
 
-function loginUser($pdo , $username, $password, $first_name, $last_name, $birth_date, $gender) {
+function loginUser($pdo , $username, $password) {
 	$sql = "SELECT * FROM users WHERE username=?";
 	$stmt = $pdo->prepare($sql);
 	$executeQuery = $stmt->execute([$username]);
