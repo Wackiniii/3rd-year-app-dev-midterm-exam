@@ -1,5 +1,34 @@
 <?php  
 
+function registerUser($pdo , $username, $password, $first_name, $last_name, $birth_date, $gender) {
+	$hashed_password = password_hash($password, PASSWORD_ARGON2ID);
+
+	$sql = "INSERT INTO users (username, password, first_name, last_name, birth_date, gender) 
+            VALUES (?, ?, ?, ?, ?, ?)";
+
+	$stmt = $pdo->prepare($sql);
+	$executeQuery = $stmt->execute([$username, $hashed_password, $first_name, 
+		$last_name, $birth_date, $gender]);
+
+	if ($executeQuery) {
+		return true;
+	}
+}
+
+function loginUser($pdo , $username, $password, $first_name, $last_name, $birth_date, $gender) {
+	$sql = "SELECT * FROM users WHERE username=?";
+	$stmt = $pdo->prepare($sql);
+	$executeQuery = $stmt->execute([$username]);
+
+	if ($stmt->rowCount() > 0) {
+		$user = $stmt->fetch();
+		if (password_verify($password, $user['password'])) {
+            return $user['user_id'];
+        }
+	}
+	return false;
+}
+
 function insertAlbum($pdo, $album_name, $artist_name, $producer_name, 
 	$status, $release_date) {
 
