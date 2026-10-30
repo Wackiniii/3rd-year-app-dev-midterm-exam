@@ -61,5 +61,7 @@ if (!isset($_SESSION['user_id'])) {
 
 	</div> 
 	<?php } ?>
+
+	<a href="core/handleForms.php?logout=true">Logout</a>
 </body>
 </html>
