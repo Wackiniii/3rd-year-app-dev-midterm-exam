@@ -44,26 +44,39 @@ if (!isset($_SESSION['user_id'])) {
 			<input type="reset" value="Reset">
 		</p>
 	</form>
-	<?php $getAllAlbum = getAllAlbum($pdo); ?>
-	<?php foreach ($getAllAlbum as $row) { ?>
-	<div class="container" style="border-style: solid; width: 50%; height: 330px; margin-top: 20px;">
-		<h3>Album Name: <?php echo $row['album_name']; ?></h3>
-		<h3>Artist Name: <?php echo $row['artist_name']; ?></h3>
-		<h3>Producer Name: <?php echo $row['producer_name']; ?></h3>
-		<h3>Status: <?php echo $row['status']; ?></h3>
-		<h3>Release Date: <?php echo $row['release_date']; ?></h3>
-		<h3>Date Added: <?php echo $row['date_added']; ?></h3>
-		<h3>Added by: <?php echo $row['added_by']; ?></h3>
-		<h3>Last Modified by: <?php echo $row['last_modified_by']; ?></h3>
 
-
-		<div class="editAndDelete" style="float: right; margin-right: 20px;">
-			<a href="viewTracks.php?album_id=<?php echo $row['album_id']; ?>">View Tracks</a>
+		<table style="width:100%; margin-top: 50px;">
+	  <tr>
+	    <th>Album ID</th>
+		<th>Album Name</th>
+	    <th>Artist Name</th>
+	    <th>Producer Name</th>
+	    <th>Status</th>
+		<th>Release Date</th>
+	    <th>Added By</th>
+		<th>Modified By</th>
+		<th>Date_Added</th>
+	    <th>Action</th>
+	  </tr>
+	  <?php $getAllAlbum = getAllAlbum($pdo); ?>
+	  <?php foreach ($getAllAlbum as $row) { ?>
+	  <tr>
+	  	<td><?php echo $row['album_id']; ?></td>	  	
+	  	<td><?php echo $row['album_name']; ?></td>	  	
+		<td><?php echo $row['artist_name']; ?></td>	  	
+	  	<td><?php echo $row['producer_name']; ?></td>	  	
+	  	<td><?php echo $row['status']; ?></td>
+		<td><?php echo $row['release_date']; ?></td>	 
+		<td><?php echo $row['added_by']; ?></td>	 
+		<td><?php echo $row['last_modified_by']; ?></td> 	
+	  	<td><?php echo $row['date_added']; ?></td>
+	  	<td>
+	  		<a href="viewTracks.php?album_id=<?php echo $row['album_id']; ?>">View Tracks</a>
 			<a href="editAlbum.php?album_id=<?php echo $row['album_id']; ?>">Edit</a>
 			<a href="deleteAlbum.php?album_id=<?php echo $row['album_id']; ?>">Delete</a>
-		</div>
-
-	</div> 
+	  	</td>	  	
+	  </tr>
 	<?php } ?>
+	</table>
 </body>
 </html>
