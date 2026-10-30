@@ -1,5 +1,13 @@
-<?php require_once 'core/dbConfig.php'; ?>
-<?php require_once 'core/models.php'; ?>
+<?php
+session_start();
+require_once 'core/dbConfig.php';
+require_once 'core/models.php';
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,5 +61,7 @@
 
 	</div> 
 	<?php } ?>
+
+	<a href="core/handleForms.php?logout=true">Logout</a>
 </body>
 </html>
