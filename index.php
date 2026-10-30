@@ -23,15 +23,15 @@ if (!isset($_SESSION['user_id'])) {
 	<form action="core/handleForms.php" method="POST">
 		<p>
 			<label for="album_name">Album Name</label> 
-			<input type="text" name="album_name">
+			<input type="text" name="album_name" required>
 		</p>
 		<p>
 			<label for="artist_name">Artist Name</label> 
-			<input type="text" name="artist_name">
+			<input type="text" name="artist_name" required>
 		</p>
 		<p>
 			<label for="producer_name">Producer Name</label> 
-			<input type="text" name="producer_name">
+			<input type="text" name="producer_name" required>
 		</p>
 		<p>
 			<label for="status">Status</label> 
@@ -41,6 +41,7 @@ if (!isset($_SESSION['user_id'])) {
 			<label for="release_date">Release</label> 
 			<input type="date" name="release_date">
             <input type="submit" name="insertAlbumBtn">
+			<input type="reset" value="Reset">
 		</p>
 	</form>
 	<?php $getAllAlbum = getAllAlbum($pdo); ?>

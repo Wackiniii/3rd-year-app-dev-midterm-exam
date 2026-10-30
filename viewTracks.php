@@ -18,15 +18,15 @@ require_once 'core/handleForms.php';
 	<form action="core/handleForms.php?album_id=<?php echo $_GET['album_id']; ?>" method="POST">
 		<p>
 			<label for="track_name">Track Name</label> 
-			<input type="text" name="track_name">
+			<input type="text" name="track_name" required>
 		</p>
 		<p>
 			<label for="genre">Genre</label> 
-			<input type="text" name="genre">
+			<input type="text" name="genre" required>
 		</p>
 		<p>
 			<label for="duration_seconds">Duration In Seconds</label> 
-			<input type="number" name="duration_seconds">
+			<input type="number" name="duration_seconds" required>
 		</p>
 		<p>
 			<label for="bpm">BPM</label> 
@@ -40,6 +40,7 @@ require_once 'core/handleForms.php';
 			<label for="time_signature">Time Signature</label> 
 			<input type="text" name="time_Signature">
 			<input type="submit" name="insertNewTrackBtn">
+			<input type="reset" value="Reset">
 		</p>
 	</form>
 
@@ -54,7 +55,9 @@ require_once 'core/handleForms.php';
 		<th>Time Signature</th>
 		<th>Artist Name</th>
 		<th>Producer Name</th>
-	    <th>Date Added</th>
+	    <th>Added By</th>
+		<th>Modified By</th>
+		<th>Date Added</th>
 	    <th>Action</th>
 	  </tr>
 	  <?php $getTrackByAlbum = getTracksByAlbum($pdo, $_GET['album_id']); ?>
@@ -68,7 +71,9 @@ require_once 'core/handleForms.php';
 		<td><?php echo $row['key_signature']; ?></td>	 
 		<td><?php echo $row['time_signature']; ?></td>
 		<td><?php echo $row['artist_name']; ?></td>	 
-		<td><?php echo $row['producer_name']; ?></td>	 	 	  	
+		<td><?php echo $row['producer_name']; ?></td>	 	 	 
+		<td><?php echo $row['added_by']; ?></td>
+		<td><?php echo $row['last_modified_by']; ?></td> 	
 	  	<td><?php echo $row['date_added']; ?></td>
 	  	<td>
 	  		<a href="editTracks.php?track_id=<?php echo $row['track_id']; ?>&album_id=<?php echo $_GET['album_id']; ?>">Edit</a>
