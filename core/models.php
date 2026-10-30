@@ -30,7 +30,7 @@ function loginUser($pdo , $username, $password, $first_name, $last_name, $birth_
 }
 
 function insertAlbum($pdo, $album_name, $artist_name, $producer_name, 
-	$status, $release_date) {
+	$status, $release_date, $added_by) {
 
     if (trim($status) === '') {
         $status = 'Recording';
@@ -40,11 +40,11 @@ function insertAlbum($pdo, $album_name, $artist_name, $producer_name,
     }
 
 	$sql = "INSERT INTO album(album_name, artist_name, producer_name, 
-		status, release_date) VALUES(?,?,?,?,?)";
+		status, release_date, added_by) VALUES(?,?,?,?,?,?)";
 
 	$stmt = $pdo->prepare($sql);
 	$executeQuery = $stmt->execute([$album_name, $artist_name, $producer_name, 
-		$status, $release_date]);
+		$status, $release_date, $added_by]);
 
 	if ($executeQuery) {
 		return true;
@@ -54,7 +54,7 @@ function insertAlbum($pdo, $album_name, $artist_name, $producer_name,
 
 
 function updateAlbum($pdo, $album_name, $artist_name, $producer_name, 
-	$status, $release_date, $album_id) {
+	$status, $release_date, $last_modified_by, $album_id) {
 
 	if (trim($status) === '') {
         $status = 'Recording';
@@ -68,12 +68,13 @@ function updateAlbum($pdo, $album_name, $artist_name, $producer_name,
 					artist_name = ?,
 					producer_name = ?, 
 					status = ?,
-                    release_date = ?
+                    release_date = ?,
+					last_modified_by = ?
 				WHERE album_id = ?
 			";
 	$stmt = $pdo->prepare($sql);
 	$executeQuery = $stmt->execute([$album_name, $artist_name, 
-            $producer_name, $status, $release_date, $album_id]);
+            $producer_name, $status, $release_date, $last_modified_by, $album_id]);
 	
 	if ($executeQuery) {
 		return true;
@@ -100,7 +101,62 @@ function deleteAlbum($pdo, $album_id) {
 	
 }
 
+function insertTrack($pdo, $track_name, $genre, $duration_seconds, 
+                    $bpm, $key_signature, $time_signature, $added_by, $album_id) {
 
+    if (trim($duration_seconds) === '') {
+        $duration_seconds = null;
+    }
+    if (trim($bpm) === '') {
+        $bpm = null;
+    }
+	if (trim($key_signature) === '') {
+        $key_signature = null;
+    }
+	if (trim($time_signature) === '') {
+		$time_signature = null;
+	}
+	
+	$sql = "INSERT INTO track (track_name, genre, duration_seconds, 
+                    bpm, key_signature, time_signature, added_by, album_id) VALUES (?,?,?,?,?,?,?,?)";
+	$stmt = $pdo->prepare($sql);
+	$executeQuery = $stmt->execute([$track_name, $genre, $duration_seconds, 
+                                $bpm, $key_signature, $time_signature, $added_by, $album_id]);
+	if ($executeQuery) {
+		return true;
+	}
+
+}
+
+function updateTrack($pdo, $track_name, $genre, $duration_seconds, 
+                    $bpm, $key_signature, $time_signature, $last_modified_by, $track_id) {
+	$sql = "UPDATE track
+			SET track_name = ?,
+				genre = ?,
+                duration_seconds = ?,
+                bpm = ?,
+                key_signature = ?,
+                time_signature = ?,
+				last_modified_by = ?
+			WHERE track_id = ?
+			";
+	$stmt = $pdo->prepare($sql);
+	$executeQuery = $stmt->execute([$track_name, $genre, $duration_seconds, 
+                            $bpm, $key_signature, $time_signature, $last_modified_by, $track_id]);
+
+	if ($executeQuery) {
+		return true;
+	}
+}
+
+function deleteTrack($pdo, $track_id) {
+	$sql = "DELETE FROM track WHERE track_id = ?";
+	$stmt = $pdo->prepare($sql);
+	$executeQuery = $stmt->execute([$track_id]);
+	if ($executeQuery) {
+		return true;
+	}
+}
 
 
 function getAllAlbum($pdo) {
@@ -122,10 +178,6 @@ function getAlbumByID($pdo, $album_id) {
 		return $stmt->fetch();
 	}
 }
-
-
-
-
 
 function getTracksByAlbum($pdo, $album_id) {
 	
@@ -153,34 +205,6 @@ function getTracksByAlbum($pdo, $album_id) {
 	}
 }
 
-
-function insertTrack($pdo, $track_name, $genre, $duration_seconds, 
-                    $bpm, $key_signature, $time_signature, $album_id) {
-
-    if (trim($duration_seconds) === '') {
-        $duration_seconds = null;
-    }
-    if (trim($bpm) === '') {
-        $bpm = null;
-    }
-	if (trim($key_signature) === '') {
-        $key_signature = null;
-    }
-	if (trim($time_signature) === '') {
-		$time_signature = null;
-	}
-	
-	$sql = "INSERT INTO track (track_name, genre, duration_seconds, 
-                    bpm, key_signature, time_signature, album_id) VALUES (?,?,?,?,?,?,?)";
-	$stmt = $pdo->prepare($sql);
-	$executeQuery = $stmt->execute([$track_name, $genre, $duration_seconds, 
-                                $bpm, $key_signature, $time_signature, $album_id]);
-	if ($executeQuery) {
-		return true;
-	}
-
-}
-
 function getTrackByID($pdo, $track_id) {
 	$sql = "SELECT 
 				track.track_id AS track_id,
@@ -204,37 +228,5 @@ function getTrackByID($pdo, $track_id) {
 		return $stmt->fetch();
 	}
 }
-
-function updateTrack($pdo, $track_name, $genre, $duration_seconds, 
-                    $bpm, $key_signature, $time_signature, $track_id) {
-	$sql = "UPDATE track
-			SET track_name = ?,
-				genre = ?,
-                duration_seconds = ?,
-                bpm = ?,
-                key_signature = ?,
-                time_signature = ?
-			WHERE track_id = ?
-			";
-	$stmt = $pdo->prepare($sql);
-	$executeQuery = $stmt->execute([$track_name, $genre, $duration_seconds, 
-                            $bpm, $key_signature, $time_signature, $track_id]);
-
-	if ($executeQuery) {
-		return true;
-	}
-}
-
-function deleteTrack($pdo, $track_id) {
-	$sql = "DELETE FROM track WHERE track_id = ?";
-	$stmt = $pdo->prepare($sql);
-	$executeQuery = $stmt->execute([$track_id]);
-	if ($executeQuery) {
-		return true;
-	}
-}
-
-
-
 
 ?>
